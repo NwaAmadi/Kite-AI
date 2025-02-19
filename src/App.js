@@ -68,7 +68,7 @@ const App = () => {
 
   return (
     <div className="form-container">
-      <h1>Kite AI Sender</h1>
+      <h1>Kite AI</h1>
       <input
         type="text"
         placeholder="Enter Wallet Address"
@@ -81,7 +81,7 @@ const App = () => {
         value={numRequests}
         onChange={(e) => setNumRequests(e.target.value)}
       />
-      <button onClick={sendPayloads}>Send</button>
+      <button onClick={sendPayloads}>Send payload</button>
 
       {/* Status Pop-up */}
       {status && (
