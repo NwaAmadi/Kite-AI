@@ -5,7 +5,9 @@ const App = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [numRequests, setNumRequests] = useState("");
   const [status, setStatus] = useState(null); // To track success or failure
-  const url = "https://quests-usage-dev.prod.zettablock.com/api/report_usage";
+
+  // Use an environment variable for the URL (best practice)
+  const apiUrl = process.env.REACT_APP_API_URL || "https://quests-usage-dev.prod.zettablock.com/api/report_usage"; // Provide a default
 
   const questionsAndAnswers = [
     { q: "What is Kite AI?", a: "Kite AI is an EVM-compatible Layer 1 blockchain designed specifically for AI applications." },
@@ -51,13 +53,20 @@ const App = () => {
           request_metadata: {}
         };
 
-        await fetch(url, {
+        const response = await fetch(apiUrl, {  // Use apiUrl here
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify(payload)
         });
+
+
+        if (!response.ok) { // Check for HTTP errors
+          console.error("HTTP error!", response.status, response.statusText);
+          setStatus("error");
+          return; // Exit if any request fails
+        }
       }
       setStatus("success"); // Indicate success
     } catch (error) {
