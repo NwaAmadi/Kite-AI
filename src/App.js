@@ -6,7 +6,7 @@ const App = () => {
   const [numRequests, setNumRequests] = useState("");
   const [status, setStatus] = useState(null); // "success" or "error"
   const [isSending, setIsSending] = useState(false);
-  const url = "/api/report_usage";
+  const url = `${process.env.REACT_APP_API_URL}/api/report_usage`;
 
      const questionsAndAnswers = [
     { q: "What is Kite AI?", a: "Kite AI is an EVM-compatible Layer 1 blockchain designed specifically for AI applications." },
