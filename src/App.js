@@ -5,7 +5,7 @@ const App = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [numRequests, setNumRequests] = useState("");
   const [status, setStatus] = useState(null); // To track success or failure
-  const url = "https://quests-usage-dev.prod.zettablock.com/api/report_usage";
+  const url = "/api/report_usage";
 
   const questionsAndAnswers = [
     { q: "What is Kite AI?", a: "Kite AI is an EVM-compatible Layer 1 blockchain designed specifically for AI applications." },
