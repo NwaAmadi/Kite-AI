@@ -4,12 +4,11 @@ import "./App.css";
 const App = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [numRequests, setNumRequests] = useState("");
-  const [status, setStatus] = useState(null); // To track success or failure
+  const [status, setStatus] = useState(null); // "success" or "error"
+  const [isSending, setIsSending] = useState(false);
+  const url = "/api/report_usage";
 
-  // Use an environment variable for the URL (best practice)
-  const apiUrl = process.env.REACT_APP_API_URL || "https://quests-usage-dev.prod.zettablock.com/api/report_usage"; // Provide a default
-
-  const questionsAndAnswers = [
+     const questionsAndAnswers = [
     { q: "What is Kite AI?", a: "Kite AI is an EVM-compatible Layer 1 blockchain designed specifically for AI applications." },
     { q: "How does Kite AI ensure transparency?", a: "It uses Proof of AI (PoAI) to fairly attribute contributions." },
     { q: "What tools does Kite AI provide?", a: "Kite AI offers developer tools, data pools, and an AI marketplace." },
@@ -30,20 +29,25 @@ const App = () => {
     { q: "Can businesses integrate Kite AI?", a: "Yes, businesses can leverage Kite AI for AI-driven solutions." },
     { q: "Is Kite AI open-source?", a: "Yes, Kite AI is open-source, allowing developers to contribute." },
     { q: "Does Kite AI use machine learning?", a: "Yes, it enables AI and machine learning integrations." }
-  ];
+    ];   
 
-  const sendPayloads = async () => {
+  const handleSend = async () => {
+    // Validate inputs
     if (!walletAddress) {
       alert("Please enter a wallet address.");
       return;
     }
-    if (!numRequests || isNaN(numRequests) || numRequests <= 0) {
+    const requestsCount = parseInt(numRequests);
+    if (!requestsCount || isNaN(requestsCount) || requestsCount <= 0) {
       alert("Please enter a valid number of requests.");
       return;
     }
 
-    try {
-      for (let i = 0; i < numRequests; i++) {
+    setIsSending(true);
+    setStatus("sending");
+
+    for (let i = 0; i < requestsCount; i++) {
+      try {
         const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
         const payload = {
           wallet_address: walletAddress,
@@ -60,24 +64,26 @@ const App = () => {
           },
           body: JSON.stringify(payload)
         });
-
-
-        if (!response.ok) { // Check for HTTP errors
-          console.error("HTTP error!", response.status, response.statusText);
-          setStatus("error");
-          return; // Exit if any request fails
-        }
+      } catch (error) {
+        console.error("Error sending request:", error);
+        setStatus("error");
+        setIsSending(false);
+        return;
       }
-      setStatus("success"); // Indicate success
-    } catch (error) {
-      console.error("Error sending request:", error);
-      setStatus("error"); // Indicate failure
+      
+      // If there are more requests to send, wait 30 seconds before the next one.
+      if (i < requestsCount - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 30000));
+      }
     }
+
+    setStatus("success");
+    setIsSending(false);
   };
 
   return (
     <div className="form-container">
-      <h1>Kite AI Sender</h1>
+      <h1>Kite AI</h1>
       <input
         type="text"
         placeholder="Enter Wallet Address"
@@ -90,12 +96,25 @@ const App = () => {
         value={numRequests}
         onChange={(e) => setNumRequests(e.target.value)}
       />
-      <button onClick={sendPayloads}>Send</button>
+      <button onClick={handleSend} disabled={isSending}>
+        Send Payload{parseInt(numRequests) > 1 ? "s" : ""}
+      </button>
 
-      {/* Status Pop-up */}
-      {status && (
-        <div className={`status-popup ${status}`}>
-          {status === "success" ? "Payload sent successfully!" : "Failed to send payload."}
+      {isSending && (
+        <div className="status-popup sending">
+          Sending, please wait...
+        </div>
+      )}
+
+      {status === "success" && !isSending && (
+        <div className="status-popup success">
+          Payload sent successfully!
+        </div>
+      )}
+
+      {status === "error" && !isSending && (
+        <div className="status-popup error">
+          Failed to send payload.
         </div>
       )}
     </div>
