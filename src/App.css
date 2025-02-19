@@ -1,38 +1,79 @@
-.App {
+/* App.css */
+
+/* General body styling */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f0f0f0; /* Light grey background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+/* Container for the form */
+.form-container {
+  background-color: #ffffff; /* White background for the form */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 400px;
+  width: 100%;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Styling for the heading */
+.form-container h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333333; /* Dark grey text */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Styling for input fields */
+.form-container input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cccccc; /* Light grey border */
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #333333; /* Dark grey text */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Styling for the button */
+.form-container button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff; /* Blue background */
+  color: #ffffff; /* White text */
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+/* Hover effect for the button */
+.form-container button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Status Pop-up */
+.status-popup {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.status-popup.success {
+  background-color: #d4edda; /* Light green for success */
+  color: #155724; /* Dark green text */
+}
+
+.status-popup.error {
+  background-color: #f8d7da; /* Light red for error */
+  color: #721c24; /* Dark red text */
 }
