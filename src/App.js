@@ -57,7 +57,7 @@ const App = () => {
           request_metadata: {}
         };
 
-        const response = await fetch(apiUrl, {  // Use apiUrl here
+        const response = await fetch(url, {  // Use apiUrl here
           method: "POST",
           headers: {
             "Content-Type": "application/json"
