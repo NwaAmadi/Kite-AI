@@ -4,10 +4,11 @@ import "./App.css";
 const App = () => {
   const [walletAddress, setWalletAddress] = useState("");
   const [numRequests, setNumRequests] = useState("");
-  const [status, setStatus] = useState(null); // To track success or failure
+  const [status, setStatus] = useState(null);
+  const [isSending, setIsSending] = useState(false);
   const url = "/api/report_usage";
 
-  const questionsAndAnswers = [
+    const questionsAndAnswers = [
     { q: "What is Kite AI?", a: "Kite AI is an EVM-compatible Layer 1 blockchain designed specifically for AI applications." },
     { q: "How does Kite AI ensure transparency?", a: "It uses Proof of AI (PoAI) to fairly attribute contributions." },
     { q: "What tools does Kite AI provide?", a: "Kite AI offers developer tools, data pools, and an AI marketplace." },
@@ -28,9 +29,43 @@ const App = () => {
     { q: "Can businesses integrate Kite AI?", a: "Yes, businesses can leverage Kite AI for AI-driven solutions." },
     { q: "Is Kite AI open-source?", a: "Yes, Kite AI is open-source, allowing developers to contribute." },
     { q: "Does Kite AI use machine learning?", a: "Yes, it enables AI and machine learning integrations." }
-  ];
+    ];   
 
-  const sendPayloads = async () => {
+  const sendPayload = async () => {
+    if (!walletAddress) {
+      alert("Please enter a wallet address.");
+      return;
+    }
+    
+    setIsSending(true);
+    setStatus(null);
+
+    try {
+      const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
+      const payload = {
+        wallet_address: walletAddress,
+        agent_id: "deployment_Hp4Y88pxNQXwLMPxlLICJZzN",
+        request_text: questionsAndAnswers[randomIndex].q,
+        response_text: questionsAndAnswers[randomIndex].a,
+        request_metadata: {}
+      };
+
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      
+      setStatus("success");
+    } catch (error) {
+      console.error("Error sending request:", error);
+      setStatus("error");
+    }
+    
+    setIsSending(false);
+  };
+
+  const sendMultiplePayloads = async () => {
     if (!walletAddress) {
       alert("Please enter a wallet address.");
       return;
@@ -39,31 +74,21 @@ const App = () => {
       alert("Please enter a valid number of requests.");
       return;
     }
+    
+    setIsSending(true);
+    setStatus(null);
 
-    try {
-      for (let i = 0; i < numRequests; i++) {
-        const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
-        const payload = {
-          wallet_address: walletAddress,
-          agent_id: "deployment_Hp4Y88pxNQXwLMPxlLICJZzN",
-          request_text: questionsAndAnswers[randomIndex].q,
-          response_text: questionsAndAnswers[randomIndex].a,
-          request_metadata: {}
-        };
-
-        await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
-        });
+    for (let i = 0; i < numRequests; i++) {
+      try {
+        await sendPayload();
+      } catch (error) {
+        setStatus("error");
+        break;
       }
-      setStatus("success"); // Indicate success
-    } catch (error) {
-      console.error("Error sending request:", error);
-      setStatus("error"); // Indicate failure
+      if (i < numRequests - 1) await new Promise((resolve) => setTimeout(resolve, 30000));
     }
+    
+    setIsSending(false);
   };
 
   return (
@@ -81,9 +106,9 @@ const App = () => {
         value={numRequests}
         onChange={(e) => setNumRequests(e.target.value)}
       />
-      <button onClick={sendPayloads}>Send payload</button>
-
-      {/* Status Pop-up */}
+      <button onClick={sendPayload} disabled={isSending}>Send Once</button>
+      <button onClick={sendMultiplePayloads} disabled={isSending}>Send {numRequests} Payloads</button>
+      
       {status && (
         <div className={`status-popup ${status}`}>
           {status === "success" ? "Payload sent successfully!" : "Failed to send payload."}
