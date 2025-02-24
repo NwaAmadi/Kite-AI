@@ -5,10 +5,11 @@ const readline = require("readline");
 const BACKEND_URL = "https://quests-usage-dev.prod.zettablock.com/api/report_usage";
 
 const AVAILABLE_WALLETS = [
-  "0x3F674024b7A0e0D8Aeb9b0683a8d826Ff9445f1B",
+  "0x3F674024b7A0e0D8Aeb9b0683a8d826Ff9445f1B", //Gospel
   "NILL-0x7890qrst1234uvwx5678yzab9012cdef",
   "NILL-0x3456ghij7890klmn1234opqr5678stuv",
-  "0x299223E617D0ea30c0084C526244A25B2d8dFcC6",
+  "0x299223E617D0ea30c0084C526244A25B2d8dFcC6", //Pirok
+  "0x37Cc3D9943E27A74fB7480f34e66098b8f3E4607",//Freedom
 ];
 
 const questionsAndAnswers = [
