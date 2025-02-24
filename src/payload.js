@@ -105,7 +105,7 @@ const Payload = async () => {
     }
   }
 
-  console.log(`Starting to send ${numRequests} requests for wallet ${walletAddress}...`);
+  console.log(`Starting to send ${numRequests} payloads for wallet ${walletAddress}...`);
 
   for (let i = 0; i < numRequests; i++) {
     const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
@@ -121,8 +121,8 @@ const Payload = async () => {
     try {
       await sendRequest(payload);
       if (i < numRequests - 1) {
-        console.log("Waiting 30 seconds before next request...");
-        await delay(30000); // 30-second delay between requests
+        console.log("Waiting 10 seconds before next request...");
+        await delay(10000); // 10-second delay between requests
       }
     } catch (error) {
       console.error("Stopping due to error.");
@@ -131,7 +131,7 @@ const Payload = async () => {
     }
   }
 
-  console.log("All requests sent successfully!");
+  console.log("Payloads sent successfully!");
   rl.close();
 };
 
