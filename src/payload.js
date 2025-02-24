@@ -122,7 +122,7 @@ const Payload = async () => {
       await sendRequest(payload);
       if (i < numRequests - 1) {
         console.log("Waiting 20 seconds before next request...");
-        await delay(20000); // 10-second delay between requests
+        await delay(20000); // 20-second delay between requests
       }
     } catch (error) {
       console.error("Stopping due to error.");
