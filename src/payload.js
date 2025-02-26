@@ -57,9 +57,9 @@ const sendRequest = async (payload) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(`Request sent successfully: ${response.status} - ${response.data}`);
+    console.log(`Payload sent successfully: ${response.status} - ${response.data}`);
   } catch (error) {
-    console.error(`Error sending request: ${error.message}`);
+    console.error(`Error sending Payload: ${error.message}`);
     throw error;
   }
 };
