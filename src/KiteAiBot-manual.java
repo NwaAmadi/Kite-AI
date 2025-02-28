@@ -16,7 +16,6 @@ public class KiteAiBot {
             Robot robot = new Robot();
             int aiNumber=args.length>0? Integer.parseInt(args[0]) : 1;
             Thread.sleep(10000);
-            // Type "Hello, World!"
             typeString(robot, "What is kite ai");
             robot.keyPress(KeyEvent.VK_ENTER);
             robot.keyRelease(KeyEvent.VK_ENTER);
